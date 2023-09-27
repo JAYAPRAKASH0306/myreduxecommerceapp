@@ -2,7 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Products } from '../Data/Products';
 import { useDispatch } from 'react-redux';
-import { addItem } from '../Redux/CartSlice'; // Corrected import path
+import { addItem } from '../Redux/Reducer/Cart'
+
+
 
 function ProductsList() {
   const params = useParams();

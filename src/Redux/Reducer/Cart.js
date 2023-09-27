@@ -6,27 +6,38 @@ export const cartSlice = createSlice({
     list: [],
   },
   reducers: {
-    addItem: (state, payload) => {
-      state.list=[...state.list,{...payload,count:1}];
+    addItem: (state, action) => {
+      state.list.push(action.payload);
     },
-    removeItem:(state,{payload})=>{
-      const index=state.list.findIndex(product=>product.id===payload.id);
-      state.list=[
-        ...state.list.slice(0,index),
-        ...state.list.slice(index+1),
-      ];
+    modifyItem: (state, action) => {
+      const { id, count } = action.payload;
+      const item = state.list.find((item) => item.id === id);
+      if (item) {
+        item.count = count;
+      }
     },
-    modifyItem:(state,{payload})=>{
-      const index=state.list.findIndex(product=>product.id===payload.id);
-      state.list=[
-        ...state.list.slice(0,index),
-        {...state.list[index],count:payload.count},
-        ...state.list.slice(index+1),
-      ];
-
-    }
+    removeItem: (state, action) => {
+      const itemId = action.payload;
+      state.list = state.list.filter((item) => item.id !== itemId);
+    },
+    incrementItem: (state, action) => {
+      const { id } = action.payload;
+      const item = state.list.find((item) => item.id === id);
+      if (item) {
+        item.count += 1;
+      }
+    },
+    decrementItem: (state, action) => {
+      const { id } = action.payload;
+      const item = state.list.find((item) => item.id === id);
+      if (item && item.count > 1) {
+        item.count -= 1;
+      } else {
+        state.list = state.list.filter((item) => item.id !== id);
+      }
+    },
   },
 });
 
-export const { addItem,removeItem,modifyItem} = cartSlice.actions;
+export const { addItem, modifyItem, removeItem, incrementItem, decrementItem } = cartSlice.actions;
 export default cartSlice.reducer;

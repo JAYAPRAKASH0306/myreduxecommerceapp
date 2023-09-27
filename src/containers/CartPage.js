@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { incrementQuantity, decrementQuantity, removeItem } from '../Redux/Reducer/Cart'; // Update the import path
+import { incrementQuantity, decrementQuantity, removeItem } from '../Redux/Reducer/Cart';
 
 function CartPage() {
   const cartItems = useSelector(state => state.cart.list);
@@ -8,7 +8,7 @@ function CartPage() {
 
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => {
-      return total + item.price * item.quantity; // Corrected from item.count to item.quantity
+      return total + item.price * item.quantity; 
     }, 0);
   };
 
@@ -30,10 +30,10 @@ function CartPage() {
         <div className='d-flex m-4 align-items-center justify-content-center' key={item.id}>
           <div className='mt-2 me-4'>
             <img
-              src={item.thumbnail} // Corrected from props.thumbnail
+              src={item.thumbnail} 
               height={150}
               width={180}
-              alt={item.title} // Corrected from props.title
+              alt={item.title} 
               className='border-radius-9'
             />
           </div>
@@ -52,7 +52,7 @@ function CartPage() {
           </button>
         </div>
       ))}
-      <p>Total Price: Rs. {calculateTotal()}</p>
+      <h2>Total Price: Rs. {calculateTotal()}</h2>
     </>
   );
 }

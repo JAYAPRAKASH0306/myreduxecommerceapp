@@ -1,18 +1,21 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Products } from '../Data/Products';
-import { useDispatch } from 'react-redux';
-import { addItem } from '../Redux/Reducer/Cart'
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem } from '../Redux/Reducer/Cart';
+import { Link } from 'react-router-dom'; // Import Link
 
 function ProductsList() {
   const params = useParams();
   const dispatch = useDispatch();
   const product = Products.find((e) => e.id === parseInt(params.id));
+  const cartItems = useSelector((state) => state.cart.list);
+
+  const isItemInCart = () => {
+    return cartItems.some((item) => item.id === product.id);
+  };
 
   const addToCart = () => {
-    // Dispatch the addItem action with the product as payload
     dispatch(addItem(product));
   };
 
@@ -32,7 +35,9 @@ function ProductsList() {
         <h6 className='mt-2'>Price Rs: {product.price}</h6>
         <h6 className='mt-2'>Rating: {product.rating}</h6>
         <div className='mt-4'>
-          {product.stock > 0 ? (
+          {isItemInCart() ? (
+            <><Link to="/cart" className="btn btn-danger">Go to Cart</Link></>
+          ) : product.stock > 0 ? (
             <>
               <button className='btn btn-success'>Buy Now</button>
               <button

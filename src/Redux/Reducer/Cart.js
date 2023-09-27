@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -7,37 +7,26 @@ export const cartSlice = createSlice({
   },
   reducers: {
     addItem: (state, action) => {
-      state.list.push(action.payload);
-    },
-    modifyItem: (state, action) => {
-      const { id, count } = action.payload;
-      const item = state.list.find((item) => item.id === id);
-      if (item) {
-        item.count = count;
-      }
+      state.list = [...state.list, { ...action.payload, quantity: 1 }];
     },
     removeItem: (state, action) => {
-      const itemId = action.payload;
-      state.list = state.list.filter((item) => item.id !== itemId);
+      state.list = state.list.filter(item => item.id !== action.payload);
     },
-    incrementItem: (state, action) => {
-      const { id } = action.payload;
-      const item = state.list.find((item) => item.id === id);
-      if (item) {
-        item.count += 1;
+    incrementQuantity: (state, action) => {
+      const itemToIncrement = state.list.find(item => item.id === action.payload);
+      if (itemToIncrement) {
+        itemToIncrement.quantity += 1;
       }
     },
-    decrementItem: (state, action) => {
-      const { id } = action.payload;
-      const item = state.list.find((item) => item.id === id);
-      if (item && item.count > 1) {
-        item.count -= 1;
-      } else {
-        state.list = state.list.filter((item) => item.id !== id);
+    decrementQuantity: (state, action) => {
+      const itemToDecrement = state.list.find(item => item.id === action.payload);
+      if (itemToDecrement && itemToDecrement.quantity > 1) {
+        itemToDecrement.quantity -= 1;
       }
     },
   },
 });
 
-export const { addItem, modifyItem, removeItem, incrementItem, decrementItem } = cartSlice.actions;
+export const { addItem, removeItem, incrementQuantity, decrementQuantity } = cartSlice.actions;
+
 export default cartSlice.reducer;
